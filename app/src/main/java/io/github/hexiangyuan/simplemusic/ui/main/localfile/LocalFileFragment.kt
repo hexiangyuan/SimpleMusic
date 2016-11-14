@@ -1,4 +1,4 @@
-package io.github.hexiangyuan.simplemusic.ui.main.musicplayer
+package io.github.hexiangyuan.simplemusic.ui.main.localfile
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

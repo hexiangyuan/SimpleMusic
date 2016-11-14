@@ -9,8 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.widget.RadioButton
 import io.github.hexiangyuan.simplemusic.R
-import io.github.hexiangyuan.simplemusic.ui.main.localfile.MusicPlayerFragment
-import io.github.hexiangyuan.simplemusic.ui.main.musicplayer.LocalFileFragment
+import io.github.hexiangyuan.simplemusic.ui.main.musicplayer.MusicPlayerFragment
+import io.github.hexiangyuan.simplemusic.ui.main.localfile.LocalFileFragment
 import io.github.hexiangyuan.simplemusic.ui.main.playlist.PlayListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar_menu.*
