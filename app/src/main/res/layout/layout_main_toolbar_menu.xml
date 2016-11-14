@@ -6,7 +6,6 @@
     android:layout_height="?attr/actionBarSize"
     android:gravity="center_vertical|right"
     android:orientation="horizontal"
-    tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
     <RadioButton
