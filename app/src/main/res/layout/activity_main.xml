@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         toolbar:title="@string/app_name"
+        android:background="@color/dark_blue.colorPrimaryDark"
         toolbar:titleTextColor="@android:color/white"
         toolbar:titleTextAppearance="@style/dark_color.Theme.TextAppearance.Light.Toolbar.Title">
 

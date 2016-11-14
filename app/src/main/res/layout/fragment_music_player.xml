@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/default_record_album" />
+    </FrameLayout>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/songName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp"
+        tools:text="鸟" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/songArtist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        android:textColor="?attr/colorAccent"
+        android:textSize="14sp"
+        tools:text="谭维维" />
+
+    <RelativeLayout
+        android:id="@+id/layout_play_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:showDividers="middle">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btnPlayPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_play" />
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btnPlayNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toEndOf="@id/btnPlayPause"
+            android:layout_toRightOf="@id/btnPlayPause"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_play_next" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btnPlayLast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/btnPlayPause"
+            android:layout_toStartOf="@id/btnPlayPause"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_play_last" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btnPlayMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/btnPlayLast"
+            android:layout_toStartOf="@id/btnPlayLast"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_play_mode_shuffle" />
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btnFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toEndOf="@id/btnPlayNext"
+            android:layout_toRightOf="@id/btnPlayNext"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_favorite_no" />
+    </RelativeLayout>
+
+</LinearLayout>
