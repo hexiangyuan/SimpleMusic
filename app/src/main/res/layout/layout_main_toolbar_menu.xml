@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/radioGroupControls"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:gravity="center_vertical|right"
+    android:orientation="horizontal"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <RadioButton
+        android:id="@+id/radioBtnPlayList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/selector_main_nav_play_list"
+        android:checked="true"
+        android:gravity="center"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <RadioButton
+        android:id="@+id/radioBtnMusicPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/selector_main_nav_music"
+        android:gravity="center"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <RadioButton
+        android:id="@+id/radioBtnLocalFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/selector_main_nav_local_files"
+        android:gravity="center_horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+</RadioGroup>
