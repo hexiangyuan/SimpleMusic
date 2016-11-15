@@ -5,5 +5,7 @@ package io.github.hexiangyuan.simplemusic.data
  * Date   : 16-11-14
  */
 enum class PlayMode {
-
+    SINGLE,
+    RANDOM,
+    LIST,
 }

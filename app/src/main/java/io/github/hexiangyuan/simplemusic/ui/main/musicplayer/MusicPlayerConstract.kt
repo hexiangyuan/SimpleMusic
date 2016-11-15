@@ -12,13 +12,13 @@ import io.github.hexiangyuan.simplemusic.data.Song
 interface MusicPlayerConstract {
     interface View :BaseView<Presenter>{
 
-        fun musicLoaded(song:Song)
+        fun musicView(song:Song)
 
-        fun changeSeekBar(time:Int)
-
-        fun startMusic()
+        fun SeekTo(time:Int)
 
         fun pauseMusic()
+
+        fun startMusic()
 
         fun changePlayMode(mode:String)
 

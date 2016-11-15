@@ -1,20 +1,18 @@
 package io.github.hexiangyuan.simplemusic.player
 
-import io.github.hexiangyuan.simplemusic.data.PlayList
 import io.github.hexiangyuan.simplemusic.data.PlayMode
 import io.github.hexiangyuan.simplemusic.data.Song
-import java.text.FieldPosition
+import java.util.*
 
 /**
  * Creator : xiyoung
  * Date   : 16-11-14
  */
 interface IPlayerBack{
-    fun setPlayList(playList: PlayList)
-    fun InitPlayer()
-    fun play(song: Song)
-    fun play(playList: PlayList)
-    fun play(playList: PlayList,starPosition:Int)
+    fun playFromPause(): Boolean
+    fun pause(): Boolean
+    fun play(song: Song): Boolean
+    fun play(playList: ArrayList<Song>, starPosition: Int = 0): Boolean
     fun setPlayMode(playMode: PlayMode)
     fun playNext():Boolean
     fun playLast():Boolean
@@ -23,12 +21,14 @@ interface IPlayerBack{
     fun getProgress():Int
     fun registerCallBack(callBack: CallBack)
     fun unRegisterCallBack(callBack: CallBack)
+    fun unRegisterAllCallBack()
 
     interface CallBack{
         fun onComplete(next:Song)
         fun onSwitchLast(last:Song)
         fun onSwitchNext(next: Song)
         fun onPlayStatusChange(isPlaying: Boolean)
+        fun onPlayModeChange(mode: PlayMode)
     }
 }
 
