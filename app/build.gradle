@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 def  anko_version = 0.9
+def rxjava_version = "1.1.6"
+def rxandroid_version = "1.2.1"
 
 android {
     compileSdkVersion 25
@@ -36,6 +38,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko-common:$anko_version"
+    compile "io.reactivex:rxjava:$rxjava_version"
+    compile "io.reactivex:rxandroid:$rxandroid_version"
 }
 repositories {
     mavenCentral()
