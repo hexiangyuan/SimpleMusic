@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import io.github.hexiangyuan.simplemusic.R
 import io.github.hexiangyuan.simplemusic.data.PlayMode
+import io.github.hexiangyuan.simplemusic.extention.formatTime
 import io.github.hexiangyuan.simplemusic.player.PlayerModel
 import kotlinx.android.synthetic.main.fragment_music_player.*
 import org.jetbrains.anko.toast
@@ -29,9 +30,9 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        mPresenter.bindService()
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(p0: SeekBar?) {
-                throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
@@ -39,7 +40,6 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
             }
 
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
         })
@@ -52,23 +52,24 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
 
     override fun onResume() {
         super.onResume()
-        mPresenter.bindService()
+
     }
 
     override fun initProgress(progress: Int) {
         seekBar.progress = progress
-        startTime.text = progress.toString()
+        startTime.text = progress.formatTime("mm:ss")
     }
 
     override fun initStartPause(isStart: Boolean) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (isStart) btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pause))
+        else btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play))
     }
 
     override fun loadPlayerModel(playerModel: PlayerModel) {
         if (playerModel.hasMusic()) {
             seekBar.max = playerModel.getCurrentSong().duration
-            endTime.text = playerModel.getCurrentSong().duration.toString()
-            songName.text = playerModel.getCurrentSong().song
+            endTime.text = playerModel.getCurrentSong().duration.formatTime("mm:ss")
+            songName.text = playerModel.getCurrentSong().title
             songArtist.text = playerModel.getCurrentSong().artist
 //        albumImage
             changePlayMode(playerModel.playMode)

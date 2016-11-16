@@ -1,5 +1,8 @@
 package io.github.hexiangyuan.simplemusic.ui.main
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -9,11 +12,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.widget.RadioButton
 import io.github.hexiangyuan.simplemusic.R
-import io.github.hexiangyuan.simplemusic.ui.main.musicplayer.MusicPlayerFragment
 import io.github.hexiangyuan.simplemusic.ui.main.localfile.LocalFileFragment
+import io.github.hexiangyuan.simplemusic.ui.main.musicplayer.MusicPlayerFragment
 import io.github.hexiangyuan.simplemusic.ui.main.playlist.PlayListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar_menu.*
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        requestCameraPermissions()
         val playListFragment = PlayListFragment()
         val musicPlayerFragment = MusicPlayerFragment()
         val localFileFragment = LocalFileFragment()
@@ -59,5 +65,18 @@ class MainActivity : AppCompatActivity() {
 
         override fun getPageTitle(position: Int): CharSequence = titles[position]
 
+    }
+
+    fun requestCameraPermissions() {
+        // Android6.0以上才能动态获取权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

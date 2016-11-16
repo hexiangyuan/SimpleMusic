@@ -2,7 +2,6 @@ package io.github.hexiangyuan.simplemusic.ui.main.musicplayer
 
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import io.github.hexiangyuan.simplemusic.data.PlayMode
@@ -46,8 +45,8 @@ class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Con
     }
 
     override fun bindService() {
-        val intent = Intent(mContext, MusicPlayerService::class.java)
-        mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
+//        val intent = Intent(mContext, MusicPlayerService::class.java)
+//        mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
     }
 
     override fun playMusic() {
