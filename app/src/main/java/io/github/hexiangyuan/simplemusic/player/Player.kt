@@ -123,7 +123,7 @@ class Player private constructor() : IPlayerBack {
         }
     }
 
-    override fun getProgress(): Int = mediaPlayer.duration
+    override fun getProgress(): Int = mediaPlayer.currentPosition
 
     override fun registerCallBack(callBack: IPlayerBack.CallBack) {
         this.callBack.add(callBack)
