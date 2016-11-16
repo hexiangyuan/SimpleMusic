@@ -36,6 +36,7 @@ class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Con
 
     override fun onPlayStatusChange(isPlaying: Boolean) {
         view.updateBtnStart(isPlaying)
+        initPlayerInfo()
     }
 
     override fun onPlayModeChange(mode: PlayMode) {
@@ -78,12 +79,6 @@ class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Con
     override fun bindService() {
         val intent = Intent(mContext, MusicPlayerService::class.java)
         mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
-    }
-
-    override fun playMusic() {
-        if (hasBound) {
-            playerService!!.play()
-        }
     }
 
     override fun pauseMusic() {

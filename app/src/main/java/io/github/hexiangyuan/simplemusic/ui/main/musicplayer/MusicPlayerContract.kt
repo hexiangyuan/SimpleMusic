@@ -40,8 +40,6 @@ interface MusicPlayerContract {
 
         fun initPlayerInfo()
 
-        fun playMusic()
-
         fun pauseMusic()
 
         fun nextMusic()
