@@ -16,17 +16,16 @@ import org.jetbrains.anko.toast
 
 
 /**
-* Creator:HeXiangyuan
-* Date  : 16-11-14.
-*/
+ * Creator:HeXiangyuan
+ * Date  : 16-11-14.
+ */
 class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickListener {
-
     val mPresenter: MusicPlayerContract.Presenter by lazy {
         MusicPlayerPresenter(this, context)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View?
-            = inflater!!.inflate(R.layout.fragment_music_player,container,false)
+            = inflater!!.inflate(R.layout.fragment_music_player, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -55,6 +54,11 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
         mPresenter.initPlayerInfo()
     }
 
+    override fun onDestroy() {
+        mPresenter.uniBindServices()
+        super.onDestroy()
+    }
+
     override fun initProgress(progress: Int) {
         seekBar.progress = progress
         startTime.text = progress.formatTime("mm:ss")
@@ -63,6 +67,15 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
     override fun initStartPause(isStart: Boolean) {
         if (isStart) btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pause))
         else btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play))
+    }
+
+    override fun updateBtnStart(boolean: Boolean) {
+        if(isAdded){
+            if (boolean)
+                btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pause))
+            else
+                btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play))
+        }
     }
 
     override fun loadPlayerModel(playerModel: PlayerModel) {
@@ -82,13 +95,6 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
         startTime.text = time.toString()
     }
 
-    override fun pauseMusic() {
-        btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pause))
-    }
-
-    override fun startMusic() {
-
-    }
 
     override fun changePlayMode(mode: PlayMode) {
         when (mode) {
@@ -104,7 +110,7 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
                 mPresenter.changeMode()
             }
             btnPlayPause -> {
-
+                mPresenter.pauseMusic()
             }
             btnPlayLast -> {
                 mPresenter.lastMusic()

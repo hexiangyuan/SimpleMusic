@@ -20,9 +20,7 @@ interface MusicPlayerContract {
 
         fun SeekTo(time: Int)
 
-        fun pauseMusic()
-
-        fun startMusic()
+        fun updateBtnStart(boolean: Boolean)
 
         fun changePlayMode(mode: PlayMode)
 

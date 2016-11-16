@@ -95,7 +95,6 @@ class MusicPlayerService : Service(), IPlayerBack {
     }
 
     override fun onDestroy() {
-        mPlayer.release()
         super.onDestroy()
     }
 }

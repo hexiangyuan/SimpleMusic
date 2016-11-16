@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import io.github.hexiangyuan.simplemusic.data.PlayMode
+import io.github.hexiangyuan.simplemusic.data.Song
+import io.github.hexiangyuan.simplemusic.player.IPlayerBack
 import io.github.hexiangyuan.simplemusic.service.MusicPlayerService
 import org.jetbrains.anko.toast
 
@@ -14,12 +16,33 @@ import org.jetbrains.anko.toast
  * Creator : xiyoung
  * Date   : 16-11-15
  */
-class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Context) : MusicPlayerContract.Presenter {
+class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Context) : MusicPlayerContract.Presenter, IPlayerBack.CallBack {
+    override fun onComplete(next: Song) {
+        view.loadPlayerModel(playerModel)
+    }
+
+    override fun onSwitchLast(last: Song) {
+        view.loadPlayerModel(playerModel)
+    }
+
+    override fun onSwitchNext(next: Song) {
+        view.loadPlayerModel(playerModel)
+    }
+
+    override fun onPlayStatusChange(isPlaying: Boolean) {
+        view.updateBtnStart(isPlaying)
+    }
+
+    override fun onPlayModeChange(mode: PlayMode) {
+
+    }
+
     var playerService: MusicPlayerService? = null
 
     val playerModel by lazy { playerService!!.getPlayerModel() }
 
     var hasBound = false
+
     init {
         view.setPresenter(this)
     }
@@ -39,6 +62,8 @@ class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Con
 
     override fun initPlayerInfo() {
         if (hasBound) {
+            playerService!!.unRegisterCallBack(MusicPlayerPresenter@this)
+            playerService!!.registerCallBack(MusicPlayerPresenter@this)
             view.loadPlayerModel(playerModel)
             view.initProgress(playerService!!.getProgress())
             view.initStartPause(playerService!!.isPlaying())
@@ -57,8 +82,11 @@ class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Con
     }
 
     override fun pauseMusic() {
-        if (hasBound && playerService!!.isPlaying()) {
-            playerService!!.pause()
+        if (hasBound) {
+            if (playerService!!.isPlaying())
+                playerService!!.pause()
+            else
+                playerService!!.playFromPause()
         }
     }
 

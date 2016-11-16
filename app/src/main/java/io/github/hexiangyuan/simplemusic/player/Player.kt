@@ -54,6 +54,7 @@ class Player private constructor() : IPlayerBack {
     override fun pause(): Boolean {
         if (isPlaying()) {
             mediaPlayer.pause()
+            onPlayStatusChange(false)
         }
         return !isPlaying()
     }
@@ -75,6 +76,7 @@ class Player private constructor() : IPlayerBack {
         playModel.clear()
         mediaPlayer.reset()
         mediaPlayer.release()
+        onPlayStatusChange(false)
     }
 
 
