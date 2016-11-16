@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.github.hexiangyuan.simplemusic.data.Song
+import io.github.hexiangyuan.simplemusic.player.Player
+import java.util.*
 
 
 /**
@@ -15,23 +17,20 @@ import io.github.hexiangyuan.simplemusic.data.Song
 */
 class LocalFileFragment : Fragment(), LocalMusicContract.View {
     override fun showProgress() {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun hideProgress() {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun handleErrorMsg(exception: Exception) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onLocalMusicLoaded(list: List<Song>) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onLocalMusicLoaded(list: ArrayList<Song>) {
+        (view as TextView).text = list[0].displayName
+        Player.instance.play(list)
     }
 
     override fun setPresenter(t: LocalMusicContract.Presenter) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     val mPresenter: LocalMusicPresenter by lazy {

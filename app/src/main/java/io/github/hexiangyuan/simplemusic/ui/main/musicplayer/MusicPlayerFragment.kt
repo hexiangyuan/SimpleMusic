@@ -52,7 +52,7 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
 
     override fun onResume() {
         super.onResume()
-
+        mPresenter.initPlayerInfo()
     }
 
     override fun initProgress(progress: Int) {

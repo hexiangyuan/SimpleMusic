@@ -3,6 +3,7 @@ package io.github.hexiangyuan.simplemusic.ui.main.localfile
 import io.github.hexiangyuan.simplemusic.BasePresenter
 import io.github.hexiangyuan.simplemusic.BaseView
 import io.github.hexiangyuan.simplemusic.data.Song
+import java.util.*
 
 /**
  * Creator:HeXiangYuan
@@ -18,7 +19,7 @@ interface LocalMusicContract {
 
         fun handleErrorMsg(exception: Exception)
 
-        fun onLocalMusicLoaded(list: List<Song>)
+        fun onLocalMusicLoaded(list: ArrayList<Song>)
 
     }
 
