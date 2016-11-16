@@ -11,6 +11,7 @@ import java.util.*
 interface IPlayerBack{
     fun playFromPause(): Boolean
     fun pause(): Boolean
+    fun play():Boolean
     fun play(song: Song): Boolean
     fun play(playList: ArrayList<Song>, starPosition: Int = 0): Boolean
     fun setPlayMode(playMode: PlayMode)
@@ -19,6 +20,7 @@ interface IPlayerBack{
     fun isPlaying():Boolean
     fun seekTo(progress:Int):Boolean
     fun getProgress():Int
+    fun release()
     fun registerCallBack(callBack: CallBack)
     fun unRegisterCallBack(callBack: CallBack)
     fun unRegisterAllCallBack()

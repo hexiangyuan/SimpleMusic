@@ -11,6 +11,7 @@ import java.util.*
  */
 class Player private constructor() : IPlayerBack {
     private var mediaPlayer: MediaPlayer
+
     private var callBack: ArrayList<IPlayerBack.CallBack> = ArrayList()
     var playModel: PlayerModel
 
@@ -25,9 +26,15 @@ class Player private constructor() : IPlayerBack {
     private object Holder {
 
         val player = Player()
+
     }
+
     companion object {
         val instance: Player by lazy { Holder.player }
+    }
+
+    override fun play(): Boolean {
+        return play(playModel.getCurrentSong())
     }
     override fun play(song: Song): Boolean {
         if (playModel.hasMusic()) {
@@ -45,7 +52,10 @@ class Player private constructor() : IPlayerBack {
     }
 
     override fun pause(): Boolean {
-        return isPlaying()
+        if (isPlaying()) {
+            mediaPlayer.pause()
+        }
+        return !isPlaying()
     }
 
     override fun playFromPause(): Boolean {
@@ -59,6 +69,12 @@ class Player private constructor() : IPlayerBack {
         playModel.musicList = playList
         playModel.currentPosition = starPosition
         return play(playModel.musicList[playModel.currentPosition])
+    }
+
+    override fun release() {
+        playModel.clear()
+        mediaPlayer.reset()
+        mediaPlayer.release()
     }
 
 
@@ -127,19 +143,19 @@ class Player private constructor() : IPlayerBack {
     }
 
     private fun onPlayModeChange(mode: PlayMode) {
-        callBack!!.forEach { back ->
+        callBack.forEach { back ->
             back.onPlayModeChange(mode)
         }
     }
 
     private fun onSwitchLast(song: Song) {
-        callBack!!.forEach { back ->
+        callBack.forEach { back ->
             back.onSwitchLast(song)
         }
     }
 
     private fun onSwitchNext(song: Song) {
-        callBack!!.forEach { back ->
+        callBack.forEach { back ->
             back.onSwitchNext(song)
         }
     }

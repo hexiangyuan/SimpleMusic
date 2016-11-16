@@ -1,12 +1,9 @@
 package io.github.hexiangyuan.simplemusic.ui.main.musicplayer
 
-import android.app.Service
 import io.github.hexiangyuan.simplemusic.BasePresenter
 import io.github.hexiangyuan.simplemusic.BaseView
 import io.github.hexiangyuan.simplemusic.data.PlayMode
-import io.github.hexiangyuan.simplemusic.data.Song
 import io.github.hexiangyuan.simplemusic.player.PlayerModel
-import rx.Subscriber
 
 /**
  * Creator : HeXiangyuan
@@ -15,7 +12,11 @@ import rx.Subscriber
 interface MusicPlayerContract {
     interface View : BaseView<Presenter> {
 
-        fun loadPlayerModel(playerMode: PlayerModel)
+        fun loadPlayerModel(playerModel: PlayerModel)
+
+        fun initProgress(progress: Int)
+
+        fun initStartPause(isStart: Boolean)
 
         fun SeekTo(time: Int)
 
@@ -23,38 +24,39 @@ interface MusicPlayerContract {
 
         fun startMusic()
 
-        fun changePlayMode(mode: String)
+        fun changePlayMode(mode: PlayMode)
 
         fun addedToFavorite()
 
         fun removedFromFavorite()
 
         fun showError(errorMsg: String)
+
+
     }
 
     interface Presenter : BasePresenter {
-        fun loadMusic()
 
-        fun bindPlayerService(service: Service)
+        fun initPlayerInfo()
 
-        fun unBindPlayerService(service: Service)
+        fun playMusic()
 
-        fun playMusic(song: Song)
+        fun pauseMusic()
 
-        fun pauseMusic(song: Song)
+        fun nextMusic()
 
-        fun nextMusic(song: Song)
+        fun lastMusic()
 
-        fun lastMusic(song: Song)
+        fun seekTo(progress: Int)
 
-        fun addToFavorite(song: Song)
+        fun addToFavorite()
 
-        fun removeFromFavorite(song: Song)
+        fun removeFromFavorite()
 
-        fun changeMode(mode: String)
-    }
+        fun changeMode()
 
-    interface MusicResource {
-        fun loadPlayerModel(subscribe: Subscriber<PlayerModel>)
+        fun bindService()
+
+        fun uniBindServices()
     }
 }

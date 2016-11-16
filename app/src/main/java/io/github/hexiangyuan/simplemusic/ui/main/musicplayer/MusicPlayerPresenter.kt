@@ -1,79 +1,128 @@
 package io.github.hexiangyuan.simplemusic.ui.main.musicplayer
 
-import android.app.Service
-import io.github.hexiangyuan.simplemusic.data.Song
-import io.github.hexiangyuan.simplemusic.player.PlayerModel
-import org.jetbrains.anko.custom.async
-import org.jetbrains.anko.doAsync
-import rx.Observer
-import rx.Subscriber
-import rx.functions.Action1
-import rx.internal.util.ActionSubscriber
-import rx.internal.util.ObserverSubscriber
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
+import io.github.hexiangyuan.simplemusic.data.PlayMode
+import io.github.hexiangyuan.simplemusic.service.MusicPlayerService
+import org.jetbrains.anko.toast
+
 
 /**
  * Creator : xiyoung
  * Date   : 16-11-15
  */
-class MusicPlayerPresenter(val view: MusicPlayerContract.View) : MusicPlayerContract.Presenter {
-    var model: MusicPlayerModel
+class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Context) : MusicPlayerContract.Presenter {
+    var playerService: MusicPlayerService? = null
 
+    val playerModel by lazy { playerService!!.getPlayerModel() }
+
+    var hasBound = false
     init {
-        model = MusicPlayerModel()
         view.setPresenter(this)
     }
 
-    override fun loadMusic() {
-        model.loadPlayerModel(object : Subscriber<PlayerModel>() {
-            override fun onNext(t: PlayerModel?) {
-                if (t != null) view.loadPlayerModel(t)
-                else view.showError("no music")
+    private val mConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName?, service: IBinder?) {
+            val mBinder = service as MusicPlayerService.LocalBinder
+            playerService = mBinder.getService()
+            hasBound = true
+            initPlayerInfo()
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            hasBound = false
+        }
+    }
+
+    override fun initPlayerInfo() {
+        if (hasBound) {
+            view.loadPlayerModel(playerModel)
+            view.initProgress(playerService!!.getProgress())
+            view.initStartPause(playerService!!.isPlaying())
+        }
+    }
+
+    override fun bindService() {
+        val intent = Intent(mContext, MusicPlayerService::class.java)
+        mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    override fun playMusic() {
+        if (hasBound) {
+            playerService!!.play()
+        }
+    }
+
+    override fun pauseMusic() {
+        if (hasBound && playerService!!.isPlaying()) {
+            playerService!!.pause()
+        }
+    }
+
+    override fun nextMusic() {
+        if (hasBound) {
+            if (playerService!!.playNext()) view.loadPlayerModel(playerModel)
+        }
+    }
+
+    override fun lastMusic() {
+        if (hasBound) {
+            if (playerService!!.playLast()) view.loadPlayerModel(playerModel)
+
+        }
+    }
+
+    override fun addToFavorite() {
+        if (hasBound) {
+            mContext.toast("add favorite")
+            view.addedToFavorite()
+        }
+    }
+
+
+    override fun removeFromFavorite() {
+        if (hasBound) {
+            mContext.toast("remove favorite")
+            view.removedFromFavorite()
+        }
+    }
+
+    override fun changeMode() {
+        if (hasBound) {
+            when (playerModel.playMode) {
+                PlayMode.LIST -> {
+                    changeMode(PlayMode.SINGLE)
+                }
+                PlayMode.SINGLE -> {
+                    changeMode(PlayMode.RANDOM)
+                }
+                PlayMode.RANDOM -> {
+                    changeMode(PlayMode.LIST)
+                }
             }
+        }
+    }
 
-            override fun onCompleted() {
+    fun changeMode(mode: PlayMode) {
+        playerService!!.setPlayMode(mode)
+        view.changePlayMode(mode)
+    }
 
-            }
+    override fun seekTo(progress: Int) {
+        if (hasBound) {
+            if (playerService!!.seekTo(progress)) view.SeekTo(progress)
+        }
+    }
 
-            override fun onError(e: Throwable?) {
-                view.showError(e?.message!!)
-            }
-        })
+    override fun uniBindServices() {
+        if (hasBound) {
+            mContext.unbindService(mConnection)
+            hasBound = false
+        }
     }
 
 
-    override fun bindPlayerService(service: Service) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun unBindPlayerService(service: Service) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun playMusic(song: Song) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun pauseMusic(song: Song) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun nextMusic(song: Song) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun lastMusic(song: Song) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun addToFavorite(song: Song) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun removeFromFavorite(song: Song) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun changeMode(mode: String) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }
