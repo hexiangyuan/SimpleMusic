@@ -8,10 +8,12 @@ import android.provider.MediaStore
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import android.util.Log
 import io.github.hexiangyuan.simplemusic.FileUtils
 import io.github.hexiangyuan.simplemusic.data.Song
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
+import rx.exceptions.OnErrorNotImplementedException
 import rx.functions.Func1
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
@@ -70,6 +72,7 @@ class LocalMusicPresenter(val view: LocalMusicContract.View, val context: Contex
                     return@Func1 Observable.just(songs)
                 })
                 .doOnNext { songs -> songs.sortedBy(Song::title) }
+                .doOnError { e -> Log.e("abcd", e.message) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { songs -> view.onLocalMusicLoaded(songs) }
