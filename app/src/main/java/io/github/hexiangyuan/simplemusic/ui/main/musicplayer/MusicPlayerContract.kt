@@ -30,6 +30,9 @@ interface MusicPlayerContract {
 
         fun showError(errorMsg: String)
 
+        fun  updateProgress(progress: Int) {
+        }
+
 
     }
 

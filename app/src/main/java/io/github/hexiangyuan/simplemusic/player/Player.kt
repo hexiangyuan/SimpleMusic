@@ -1,6 +1,9 @@
 package io.github.hexiangyuan.simplemusic.player
 
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Message
+import android.util.Log
 import io.github.hexiangyuan.simplemusic.data.PlayMode
 import io.github.hexiangyuan.simplemusic.data.Song
 import java.util.*
@@ -13,13 +16,32 @@ class Player private constructor() : IPlayerBack {
     private var mediaPlayer: MediaPlayer
 
     private var callBack: ArrayList<IPlayerBack.CallBack> = ArrayList()
-    var playModel: PlayerModel
+     var playModel: PlayerModel
+
+    private val handler: Handler
+
+    private val MSG_UPDATE = 1
+    private val MSG_CANCEL = 2
 
     init {
         playModel = PlayerModel()
         mediaPlayer = MediaPlayer()
         mediaPlayer.setOnCompletionListener {
             onComplete()
+        }
+
+        handler = object : Handler() {
+            override fun handleMessage(msg: Message?) {
+                when (msg!!.what) {
+                    MSG_UPDATE -> {
+                        updateProgress(mediaPlayer.currentPosition)
+                        sendEmptyMessageDelayed(MSG_UPDATE, 1000L)
+                    }
+                    MSG_CANCEL -> removeMessages(MSG_UPDATE)
+
+                }
+
+            }
         }
     }
 
@@ -36,6 +58,7 @@ class Player private constructor() : IPlayerBack {
     override fun play(): Boolean {
         return play(playModel.getCurrentSong())
     }
+
     override fun play(song: Song): Boolean {
         if (playModel.hasMusic()) {
             try {
@@ -44,6 +67,7 @@ class Player private constructor() : IPlayerBack {
                 mediaPlayer.prepare()
                 mediaPlayer.start()
                 onPlayStatusChange(true)
+                return true
             } catch (e: Exception) {
                 return false
             }
@@ -139,6 +163,11 @@ class Player private constructor() : IPlayerBack {
 
 
     private fun onPlayStatusChange(b: Boolean) {
+        if (b) {
+            handler.sendEmptyMessage(MSG_UPDATE)
+        } else {
+            handler.sendEmptyMessage(MSG_CANCEL)
+        }
         callBack.forEach { back ->
             back.onPlayStatusChange(b)
         }
@@ -159,6 +188,12 @@ class Player private constructor() : IPlayerBack {
     private fun onSwitchNext(song: Song) {
         callBack.forEach { back ->
             back.onSwitchNext(song)
+        }
+    }
+
+    private fun updateProgress(progress: Int) {
+        callBack.forEach { back ->
+            back.updateProgress(progress)
         }
     }
 }

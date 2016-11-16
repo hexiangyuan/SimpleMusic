@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.util.Log
 import io.github.hexiangyuan.simplemusic.data.PlayMode
 import io.github.hexiangyuan.simplemusic.data.Song
 import io.github.hexiangyuan.simplemusic.player.IPlayerBack
@@ -17,6 +18,10 @@ import org.jetbrains.anko.toast
  * Date   : 16-11-15
  */
 class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Context) : MusicPlayerContract.Presenter, IPlayerBack.CallBack {
+    override fun updateProgress(progress: Int) {
+      view.updateProgress(progress)
+    }
+
     override fun onComplete(next: Song) {
         view.loadPlayerModel(playerModel)
     }
@@ -47,10 +52,12 @@ class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Con
         view.setPresenter(this)
     }
 
-    private val mConnection: ServiceConnection = object : ServiceConnection {
+    private  val mConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName?, service: IBinder?) {
             val mBinder = service as MusicPlayerService.LocalBinder
             playerService = mBinder.getService()
+            playerService!!.unRegisterCallBack(this@MusicPlayerPresenter)
+            playerService!!.registerCallBack(this@MusicPlayerPresenter)
             hasBound = true
             initPlayerInfo()
         }
@@ -62,8 +69,6 @@ class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Con
 
     override fun initPlayerInfo() {
         if (hasBound) {
-            playerService!!.unRegisterCallBack(MusicPlayerPresenter@this)
-            playerService!!.registerCallBack(MusicPlayerPresenter@this)
             view.loadPlayerModel(playerModel)
             view.initProgress(playerService!!.getProgress())
             view.initStartPause(playerService!!.isPlaying())
@@ -92,13 +97,17 @@ class MusicPlayerPresenter(val view: MusicPlayerContract.View, val mContext: Con
 
     override fun nextMusic() {
         if (hasBound) {
-            if (playerService!!.playNext()) view.loadPlayerModel(playerModel)
+            if (playerService!!.playNext()){
+                initPlayerInfo()
+            }
         }
     }
 
     override fun lastMusic() {
         if (hasBound) {
-            if (playerService!!.playLast()) view.loadPlayerModel(playerModel)
+            if (playerService!!.playLast()){
+                initPlayerInfo()
+            }
 
         }
     }

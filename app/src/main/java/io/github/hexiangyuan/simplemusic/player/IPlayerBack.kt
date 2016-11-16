@@ -31,6 +31,7 @@ interface IPlayerBack{
         fun onSwitchNext(next: Song)
         fun onPlayStatusChange(isPlaying: Boolean)
         fun onPlayModeChange(mode: PlayMode)
+        fun updateProgress(progress: Int)
     }
 }
 
