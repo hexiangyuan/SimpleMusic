@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ImageView
+        <io.github.hexiangyuan.simplemusic.wigget.RecordView
             android:id="@+id/albumImage"
             android:layout_width="260dp"
             android:layout_height="260dp"

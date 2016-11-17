@@ -65,8 +65,13 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
     }
 
     override fun initStartPause(isStart: Boolean) {
-        if (isStart) btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pause))
-        else btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play))
+        if (isStart) {
+            btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pause))
+            albumImage.resume()
+        } else {
+            albumImage.pause()
+            btnPlayPause.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play))
+        }
     }
 
     override fun updateBtnStart(boolean: Boolean) {
