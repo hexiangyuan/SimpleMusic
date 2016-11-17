@@ -147,7 +147,7 @@ class MusicPlayerFragment : Fragment(), MusicPlayerContract.View, View.OnClickLi
     override fun updateProgress(progress: Int) {
         if(isAdded){
             seekBar.progress = progress
-            startTime.text = progress.formatTime("mm:ss")
+            startTime.text = progress.formatTime()
         }
     }
 }

@@ -17,7 +17,7 @@ interface LocalMusicContract {
 
         fun hideProgress()
 
-        fun handleErrorMsg(exception: Exception)
+        fun handleErrorMsg(exception: Throwable)
 
         fun onLocalMusicLoaded(list: ArrayList<Song>)
 

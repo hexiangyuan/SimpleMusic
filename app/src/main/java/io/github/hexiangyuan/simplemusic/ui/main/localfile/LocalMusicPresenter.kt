@@ -12,8 +12,8 @@ import android.util.Log
 import io.github.hexiangyuan.simplemusic.FileUtils
 import io.github.hexiangyuan.simplemusic.data.Song
 import rx.Observable
+import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
-import rx.exceptions.OnErrorNotImplementedException
 import rx.functions.Func1
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
@@ -75,7 +75,25 @@ class LocalMusicPresenter(val view: LocalMusicContract.View, val context: Contex
                 .doOnError { e -> Log.e("abcd", e.message) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { songs -> view.onLocalMusicLoaded(songs) }
+                .subscribe(object : Subscriber<ArrayList<Song>>() {
+                    override fun onStart() {
+                        super.onStart()
+                        view.showProgress()
+                    }
+
+                    override fun onNext(t: ArrayList<Song>?) {
+                        view.onLocalMusicLoaded(t!!)
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        view.hideProgress()
+                        view.handleErrorMsg(e!!)
+                    }
+
+                    override fun onCompleted() {
+                        view.hideProgress()
+                    }
+                })
         mSubscriptions.add(subscribe)
     }
 
